@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Crear Subasta{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-6">Crear nueva subasta</h1>
+
+<div class="bg-white p-6 shadow-md rounded border max-w-lg">
+    <label class="block mt-2 font-semibold">Título:</label>
+    <input id="titulo" class="border px-3 py-2 rounded w-full" />
+
+    <label class="block mt-4 font-semibold">Descripción:</label>
+    <textarea id="descripcion" class="border px-3 py-2 rounded w-full"></textarea>
+
+    <label class="block mt-4 font-semibold">Precio inicial:</label>
+    <input id="precio" type="number" class="border px-3 py-2 rounded w-full" />
+
+    <label class="block mt-4 font-semibold">Duración (horas):</label>
+    <input id="duracion" type="number" value="24" class="border px-3 py-2 rounded w-full" />
+
+    <button onclick="crearSubasta()"
+        class="mt-6 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full">
+        Crear
+    </button>
+</div>
+
+<script>
+    async function crearSubasta() {
+        const body = {
+            titulo: document.getElementById("titulo").value,
+            descripcion: document.getElementById("descripcion").value,
+            precio_inicial: parseFloat(document.getElementById("precio").value),
+            duracion_horas: parseInt(document.getElementById("duracion").value)
+        };
+
+        const res = await fetch("http://localhost:8000/subastas/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+
+        if (res.ok) {
+            alert("Subasta creada 🎉");
+            window.location.href = "/";
+        } else {
+            alert("Error al crear subasta");
+        }
+    }
+</script>
+
+{% endblock %}
