@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-6">Subastas activas</h1>
+
+<div id="lista-subastas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+<script>
+    async function cargarSubastas() {
+        const res = await fetch("http://localhost:8000/subastas/");
+        const data = await res.json();
+
+        const cont = document.getElementById("lista-subastas");
+        cont.innerHTML = "";
+
+        data.forEach(s => {
+            cont.innerHTML += `
+                <div class="bg-white shadow-lg p-4 rounded-lg border">
+                    <h2 class="text-xl font-bold">${s.titulo}</h2>
+                    <p class="text-gray-600">${s.descripcion}</p>
+
+                    <p class="mt-3 font-semibold">Precio actual: 
+                        <span class="text-green-600">$${s.precio_actual}</span>
+                    </p>
+
+                    <a href="/subasta/${s.id}" 
+                       class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        Ver detalles
+                    </a>
+                </div>
+            `;
+        });
+    }
+
+    cargarSubastas();
+</script>
+{% endblock %}
