@@ -9,6 +9,16 @@ from typing import List, Dict
 import json
 import logging
 
+# Configurar Jinja2Templates en FastAPI (parte de justin)
+from fastapi import Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+templates = Jinja2Templates(directory="templates")
+# ====================================================
+
+
+
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -168,19 +178,40 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
+# ========================================
+# 🌐 ENDPOINTS REST + HTML
+# ========================================
+
+from fastapi import Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+templates = Jinja2Templates(directory="templates")
+
+# Página principal (lista de subastas activas)
+@app.get("/", response_class=HTMLResponse)
+def mostrar_index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+# Página para crear subasta
+@app.get("/crear-subasta", response_class=HTMLResponse)
+def mostrar_crear_subasta(request: Request):
+    return templates.TemplateResponse("crear_subasta.html", {"request": request})
+
+# Página de perfil
+@app.get("/perfil", response_class=HTMLResponse)
+def mostrar_perfil(request: Request):
+    return templates.TemplateResponse("perfil.html", {"request": request})
+
+# Página de detalle de subasta
+@app.get("/subasta/{subasta_id}", response_class=HTMLResponse)
+def mostrar_detalle(request: Request, subasta_id: int):
+    return templates.TemplateResponse("detalle_subasta.html", {"request": request, "subasta_id": subasta_id})
+
 
 # ========================================
-# 🌐 ENDPOINTS REST
+# 🌐 ENDPOINTS REST (API JSON)
 # ========================================
-
-@app.get("/")
-def read_root():
-    return {
-        "mensaje": "API de Subastas funcionando 🚀",
-        "version": "2.0",
-        "docs": "/docs"
-    }
-
 
 @app.post("/usuarios/", status_code=201)
 def crear_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)):
