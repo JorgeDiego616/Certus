@@ -1,0 +1,55 @@
+<script>
+    const subastaId = Number("{{ subasta_id }}");   // ✔️ corregido
+    const usuarioId = 1;  // <---- HARDCODE TEMPORAL
+
+    const precioActual = document.getElementById("precio");
+    const historial = document.getElementById("historial");
+
+    const socket = new WebSocket(`ws://localhost:8000/ws/${subastaId}`);
+
+    socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        if (data.tipo === "nueva_puja") {
+            precioActual.textContent = "$" + data.nuevo_precio;
+
+            historial.innerHTML = `
+                <li class="bg-gray-100 p-2 rounded">
+                    💰 ${data.usuario_nombre} ofreció $${data.nuevo_precio}
+                </li>
+            ` + historial.innerHTML;
+        }
+    };
+
+    async function cargarDatos() {
+        const res = await fetch(`http://localhost:8000/subastas/${subastaId}`);
+        const s = await res.json();
+
+        document.getElementById("titulo").textContent = s.titulo;
+        document.getElementById("descripcion").textContent = s.descripcion;
+        precioActual.textContent = "$" + s.precio_actual;
+    }
+
+    async function enviarPuja() {
+        const monto = document.getElementById("monto").value;
+
+        const body = {
+            subasta_id: subastaId,
+            usuario_id: usuarioId,
+            monto: parseFloat(monto)
+        };
+
+        const res = await fetch("http://localhost:8000/pujas/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+
+        if (!res.ok) {
+            const error = await res.json();
+            alert("Error: " + error.detail);
+        }
+    }
+
+    cargarDatos();
+</script>
