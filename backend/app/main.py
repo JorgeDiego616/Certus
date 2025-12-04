@@ -22,7 +22,7 @@ import logging
 # Nota: usa "templates" si corres uvicorn desde la carpeta del backend,
 # y asegúrate de que la carpeta exista y tenga tus HTML.
 # ========================================
-templates = Jinja2Templates(directory="backend/templates")
+templates = Jinja2Templates(directory="templates")
 
 # ========================================
 # 🔧 Logging
