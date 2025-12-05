@@ -4,6 +4,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from database import SessionLocal, engine
 import crud
+from database import Base, engine
+Base.metadata.create_all(bind=engine)
+
+
 
 app = FastAPI()
 
