@@ -1,225 +1,119 @@
 /* -----------------------------
-   FONDO ESPACIAL ANIMADO
+   TEMA CAFÉ ELEGANTE
 ------------------------------ */
 
 body {
     margin: 0;
     font-family: "Poppins", sans-serif;
-    background: radial-gradient(circle at center, #0a0f1f, #05060a 70%);
-    color: white;
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 50%, #0d0705 100%);
+    color: #f4e4d7;
     overflow-x: hidden;
     position: relative;
 }
 
-/* Estrellas pequeñas generadas con CSS */
-.stars {
+/* Textura sutil de papel */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 90, 60, 0.03) 2px, rgba(139, 90, 60, 0.03) 4px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Partículas de vapor/humo sutiles */
+.vapor {
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: -3;
+    z-index: 0;
+    pointer-events: none;
 }
 
-.stars::before,
-.stars::after {
+.vapor::before,
+.vapor::after {
     content: '';
     position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
-    box-shadow: 
-        100px 200px white, 300px 100px white, 500px 300px white,
-        700px 150px white, 200px 400px white, 600px 250px white,
-        150px 50px white, 450px 400px white, 800px 350px white,
-        250px 150px white, 550px 100px white, 350px 350px white,
-        50px 300px white, 650px 450px white, 900px 100px white,
-        400px 50px white, 750px 200px white, 100px 450px white,
-        850px 400px white, 200px 250px white, 500px 150px white,
-        950px 250px white, 300px 500px white, 600px 50px white,
-        700px 500px white, 150px 350px white, 450px 250px white,
-        800px 150px white, 250px 450px white, 550px 350px white,
-        50px 100px white, 650px 300px white, 900px 450px white,
-        400px 350px white, 750px 50px white, 100px 150px white,
-        1200px 200px white, 1400px 100px white, 1100px 300px white,
-        1300px 400px white, 1000px 150px white, 1500px 250px white,
-        1150px 50px white, 1350px 350px white, 1250px 450px white,
-        920px 320px white, 1050px 180px white, 1420px 380px white,
-        1180px 280px white, 1380px 80px white, 1080px 480px white;
-    animation: twinkle 3s infinite alternate;
+    background: radial-gradient(circle, rgba(139, 90, 60, 0.08), transparent 70%);
+    filter: blur(40px);
+    animation: floatVapor 20s ease-in-out infinite;
 }
 
-.stars::after {
-    box-shadow: 
-        180px 280px white, 380px 180px white, 580px 380px white,
-        780px 230px white, 280px 480px white, 680px 330px white,
-        230px 130px white, 530px 480px white, 880px 430px white,
-        330px 230px white, 630px 180px white, 430px 430px white,
-        130px 380px white, 730px 530px white, 980px 180px white,
-        480px 130px white, 830px 280px white, 180px 530px white,
-        930px 480px white, 280px 330px white, 580px 230px white,
-        1030px 330px white, 380px 580px white, 680px 130px white,
-        1220px 280px white, 1420px 180px white, 1120px 380px white,
-        1320px 480px white, 1020px 230px white, 1520px 330px white,
-        1170px 130px white, 1370px 430px white, 1270px 530px white,
-        940px 340px white, 1070px 200px white, 1440px 400px white;
-    animation: twinkle 4s infinite alternate;
+.vapor::before {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
 }
 
-/* Estrellas medianas */
-.stars2 {
+.vapor::after {
+    top: 60%;
+    right: 15%;
+    animation-delay: 10s;
+}
+
+@keyframes floatVapor {
+    0%, 100% { 
+        transform: translate(0, 0) scale(1);
+        opacity: 0.3;
+    }
+    50% { 
+        transform: translate(30px, -30px) scale(1.2);
+        opacity: 0.5;
+    }
+}
+
+/* Granos de café decorativos (sutiles) */
+.coffee-beans {
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: -4;
+    z-index: 0;
+    pointer-events: none;
 }
 
-.stars2::before {
+.coffee-beans::before,
+.coffee-beans::after {
     content: '';
     position: absolute;
-    width: 3px;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
+    width: 8px;
+    height: 12px;
+    background: rgba(101, 67, 33, 0.15);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
     box-shadow: 
-        200px 150px rgba(255, 255, 255, 0.6),
-        400px 250px rgba(255, 255, 255, 0.7),
-        600px 100px rgba(255, 255, 255, 0.5),
-        800px 400px rgba(255, 255, 255, 0.8),
-        150px 350px rgba(255, 255, 255, 0.6),
-        550px 200px rgba(255, 255, 255, 0.7),
-        750px 450px rgba(255, 255, 255, 0.5),
-        350px 300px rgba(255, 255, 255, 0.8),
-        950px 150px rgba(255, 255, 255, 0.6),
-        250px 500px rgba(255, 255, 255, 0.7),
-        1100px 250px rgba(255, 255, 255, 0.6),
-        1300px 350px rgba(255, 255, 255, 0.7),
-        1050px 450px rgba(255, 255, 255, 0.5),
-        1250px 150px rgba(255, 255, 255, 0.8),
-        1450px 300px rgba(255, 255, 255, 0.6);
-    animation: twinkle 5s infinite alternate;
+        150px 100px rgba(101, 67, 33, 0.1),
+        400px 200px rgba(101, 67, 33, 0.12),
+        700px 150px rgba(101, 67, 33, 0.08),
+        200px 400px rgba(101, 67, 33, 0.1),
+        900px 300px rgba(101, 67, 33, 0.09),
+        500px 500px rgba(101, 67, 33, 0.11),
+        1200px 200px rgba(101, 67, 33, 0.1),
+        300px 600px rgba(101, 67, 33, 0.08);
 }
 
-/* Animación de parpadeo */
-@keyframes twinkle {
-    0% { opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { opacity: 0.5; }
-}
-
-/* Neblina espacial suave */
-.nebula {
+/* Luces cálidas ambiente */
+.ambient-light {
     position: fixed;
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 30%, rgba(80,0,120,0.15), transparent 50%),
-        radial-gradient(circle at 70% 20%, rgba(0,120,255,0.1), transparent 60%),
-        radial-gradient(circle at 50% 80%, rgba(120,0,180,0.12), transparent 55%);
-    filter: blur(60px);
-    z-index: -2;
-    animation: nebulaMove 20s ease-in-out infinite;
+        radial-gradient(circle at 20% 80%, rgba(139, 90, 60, 0.15), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(160, 82, 45, 0.12), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(101, 67, 33, 0.08), transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+    animation: pulseLight 8s ease-in-out infinite;
 }
 
-@keyframes nebulaMove {
-    0%, 100% { transform: scale(1) translate(0, 0); }
-    50% { transform: scale(1.1) translate(20px, -20px); }
-}
-
-/* Cometas - múltiples instancias */
-.cometa {
-    position: fixed;
-    width: 2px;
-    height: 100px;
-    background: linear-gradient(to bottom, white, transparent);
-    opacity: 0;
-    transform: rotate(-45deg);
-    z-index: -1;
-    animation: cometa 8s linear infinite;
-    box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.5);
-}
-
-/* Cometa 1 */
-.cometa:nth-of-type(1) {
-    top: 10%;
-    left: -100px;
-    animation-delay: 0s;
-}
-
-/* Cometa 2 */
-.cometa:nth-of-type(2) {
-    top: 40%;
-    left: -100px;
-    animation-delay: 3s;
-    animation-duration: 10s;
-}
-
-/* Cometa 3 */
-.cometa:nth-of-type(3) {
-    top: 70%;
-    left: -100px;
-    animation-delay: 6s;
-    animation-duration: 9s;
-}
-
-@keyframes cometa {
-    0% { 
-        transform: translate(-200px, -200px) rotate(-45deg); 
-        opacity: 0; 
-    }
-    10% { 
-        opacity: 1; 
-    }
-    90% { 
-        opacity: 0.8; 
-    }
-    100% { 
-        transform: translate(calc(100vw + 200px), calc(100vh + 200px)) rotate(-45deg); 
-        opacity: 0; 
-    }
-}
-
-/* Estrellas fugaces adicionales (más pequeñas y rápidas) */
-.estrella-fugaz {
-    position: fixed;
-    width: 1px;
-    height: 50px;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
-    opacity: 0;
-    transform: rotate(-45deg);
-    z-index: -1;
-    animation: fugaz 4s linear infinite;
-}
-
-.estrella-fugaz:nth-of-type(1) {
-    top: 15%;
-    left: 20%;
-    animation-delay: 1s;
-}
-
-.estrella-fugaz:nth-of-type(2) {
-    top: 50%;
-    left: 60%;
-    animation-delay: 4s;
-}
-
-.estrella-fugaz:nth-of-type(3) {
-    top: 80%;
-    left: 30%;
-    animation-delay: 7s;
-}
-
-@keyframes fugaz {
-    0% { 
-        transform: translate(0, 0) rotate(-45deg); 
-        opacity: 0; 
-    }
-    5% { 
-        opacity: 1; 
-    }
-    100% { 
-        transform: translate(300px, 300px) rotate(-45deg); 
-        opacity: 0; 
-    }
+@keyframes pulseLight {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
 }
 
 /* -----------------------------
@@ -227,45 +121,182 @@ body {
 ------------------------------ */
 
 .card {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(58, 38, 26, 0.7);
+    border: 1px solid rgba(139, 90, 60, 0.3);
     backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 20px;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .card:hover {
-    border-color: #7dd3fc;
-    box-shadow: 0 0 15px rgba(125, 211, 252, 0.3);
-    transform: translateY(-2px);
+    border-color: rgba(210, 180, 140, 0.5);
+    box-shadow: 0 8px 25px rgba(139, 90, 60, 0.4);
+    transform: translateY(-3px);
+    background: rgba(68, 45, 32, 0.8);
 }
 
 /* -----------------------------
-   TIPOGRAFÍA NEÓN GALÁCTICO
+   TIPOGRAFÍA ELEGANTE
 ------------------------------ */
+
 .neon {
-    color: #80dfff;
-    text-shadow: 0 0 8px #52b7ff, 0 0 16px #2a84ff;
+    color: #d4a574;
+    text-shadow: 0 2px 8px rgba(212, 165, 116, 0.5);
+    font-weight: 600;
+}
+
+h1, h2, h3 {
+    color: #e8d4b8;
 }
 
 /* -----------------------------
    BOTONES
 ------------------------------ */
+
 .btn-space {
-    background: linear-gradient(90deg, #52b7ff, #8f5dff);
-    border: none;
+    background: linear-gradient(135deg, #8b5a3c 0%, #654321 100%);
+    border: 1px solid rgba(139, 90, 60, 0.5);
     padding: 10px 16px;
-    color: black;
+    color: #f4e4d7;
     font-size: 1rem;
     border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .btn-space:hover {
-    filter: brightness(1.2);
+    background: linear-gradient(135deg, #a0522d 0%, #8b5a3c 100%);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(82, 183, 255, 0.4);
+    box-shadow: 0 6px 20px rgba(139, 90, 60, 0.5);
+}
+
+/* -----------------------------
+   INPUTS Y FORMULARIOS
+------------------------------ */
+
+input, textarea, select {
+    background: rgba(26, 15, 10, 0.6) !important;
+    border: 1px solid rgba(139, 90, 60, 0.3) !important;
+    color: #f4e4d7 !important;
+    transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: rgba(212, 165, 116, 0.6) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(139, 90, 60, 0.2) !important;
+}
+
+input::placeholder, textarea::placeholder {
+    color: rgba(244, 228, 215, 0.4) !important;
+}
+
+/* -----------------------------
+   NAVBAR Y FOOTER
+------------------------------ */
+
+nav, footer {
+    background: rgba(26, 15, 10, 0.85) !important;
+    backdrop-filter: blur(10px);
+    border-color: rgba(139, 90, 60, 0.3) !important;
+}
+
+nav a:hover {
+    color: #d4a574 !important;
+}
+
+/* -----------------------------
+   ELEMENTOS ESPECÍFICOS
+------------------------------ */
+
+/* Precios y valores importantes */
+.text-cyan-300, .text-cyan-400 {
+    color: #d4a574 !important;
+}
+
+/* Botones primarios */
+.bg-cyan-500 {
+    background: linear-gradient(135deg, #8b5a3c 0%, #654321 100%) !important;
+    border: 1px solid rgba(139, 90, 60, 0.5);
+}
+
+.bg-cyan-500:hover, .hover\:bg-cyan-600:hover {
+    background: linear-gradient(135deg, #a0522d 0%, #8b5a3c 100%) !important;
+}
+
+/* Estados de pujas */
+.border-green-500 {
+    border-color: rgba(139, 115, 85, 0.6) !important;
+}
+
+.border-yellow-500 {
+    border-color: rgba(160, 82, 45, 0.6) !important;
+}
+
+.text-green-400 {
+    color: #c9a66b !important;
+}
+
+.text-yellow-400 {
+    color: #d4a574 !important;
+}
+
+/* Mensajes de error */
+.bg-red-500\/20 {
+    background: rgba(101, 47, 33, 0.3) !important;
+}
+
+.border-red-500 {
+    border-color: rgba(139, 69, 52, 0.5) !important;
+}
+
+.text-red-300 {
+    color: #d4a89e !important;
+}
+
+/* Mensajes de éxito */
+.bg-green-500\/20 {
+    background: rgba(76, 63, 47, 0.3) !important;
+}
+
+.border-green-500 {
+    border-color: rgba(139, 115, 85, 0.5) !important;
+}
+
+.text-green-300 {
+    color: #c9b896 !important;
+}
+
+/* Botón de salir */
+.bg-red-500\/20 {
+    background: rgba(70, 35, 25, 0.4) !important;
+}
+
+.hover\:bg-red-500\/30:hover {
+    background: rgba(80, 40, 30, 0.5) !important;
+}
+
+/* -----------------------------
+   SCROLLBAR PERSONALIZADA
+------------------------------ */
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 90, 60, 0.6);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(160, 82, 45, 0.8);
 }
