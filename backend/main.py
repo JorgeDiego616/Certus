@@ -69,6 +69,14 @@ def api_puja(data: dict):
     db = SessionLocal()
     return crud.crear_puja(db, data)
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# *** ESTA ES LA RUTA NUEVA PARA EL PERFIL ***
+@app.post("/api/usuario/actualizar")
+def api_actualizar_usuario(data: dict):
+    db = SessionLocal()
+    return crud.actualizar_usuario(db, data)
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 
 # ---------- WEBSOCKETS ----------
 @app.websocket("/ws/{subasta_id}")

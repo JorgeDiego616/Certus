@@ -1,0 +1,114 @@
+/* -----------------------------
+   FONDO ESPACIAL ANIMADO
+------------------------------ */
+
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: radial-gradient(circle at center, #0a0f1f, #05060a 70%);
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Estrellas estáticas */
+.stars {
+    position: fixed;
+    width: 2000px;
+    height: 2000px;
+    background: transparent url('https://i.imgur.com/YKYbX9X.png') repeat;
+    animation: moverEstrellas 200s linear infinite;
+    z-index: -3;
+}
+
+/* Estrellas finas */
+.stars2 {
+    position: fixed;
+    width: 2000px;
+    height: 2000px;
+    background: transparent url('https://i.imgur.com/9m6q3u8.png') repeat;
+    animation: moverEstrellas 350s linear infinite;
+    opacity: 0.5;
+    z-index: -4;
+}
+
+/* Neblina espacial suave */
+.nebula {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(80,0,120,0.15), transparent 70%),
+                radial-gradient(circle at 70% 20%, rgba(0,120,255,0.1), transparent 60%);
+    filter: blur(4px);
+    z-index: -2;
+}
+
+/* Cometa */
+.cometa {
+    position: fixed;
+    top: -50px;
+    left: -100px;
+    width: 3px;
+    height: 160px;
+    background: linear-gradient(white, transparent);
+    opacity: 0.8;
+    transform: rotate(-45deg);
+    animation: cometa 10s linear infinite;
+    z-index: -1;
+}
+
+@keyframes cometa {
+    0% { transform: translate(-200px, -200px) rotate(-45deg); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translate(1600px, 900px) rotate(-45deg); opacity: 0; }
+}
+
+/* Movimiento lento del campo estelar */
+@keyframes moverEstrellas {
+    from { transform: translate(0,0); }
+    to { transform: translate(-500px, 500px); }
+}
+
+/* -----------------------------
+   TARJETAS / CARDS
+------------------------------ */
+
+.card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    border-color: #7dd3fc;
+    box-shadow: 0 0 15px rgba(125, 211, 252, 0.3);
+}
+
+/* -----------------------------
+   TIPOGRAFÍA NEÓN GALÁCTICO
+------------------------------ */
+.neon {
+    color: #80dfff;
+    text-shadow: 0 0 8px #52b7ff, 0 0 16px #2a84ff;
+}
+
+/* -----------------------------
+   BOTONES
+------------------------------ */
+.btn-space {
+    background: linear-gradient(90deg, #52b7ff, #8f5dff);
+    border: none;
+    padding: 10px 16px;
+    color: black;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-space:hover {
+    filter: brightness(1.2);
+}
