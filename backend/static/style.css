@@ -8,27 +8,102 @@ body {
     background: radial-gradient(circle at center, #0a0f1f, #05060a 70%);
     color: white;
     overflow-x: hidden;
+    position: relative;
 }
 
-/* Estrellas estáticas */
+/* Estrellas pequeñas generadas con CSS */
 .stars {
     position: fixed;
-    width: 2000px;
-    height: 2000px;
-    background: transparent url('https://i.imgur.com/YKYbX9X.png') repeat;
-    animation: moverEstrellas 200s linear infinite;
+    width: 100%;
+    height: 100%;
     z-index: -3;
 }
 
-/* Estrellas finas */
+.stars::before,
+.stars::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 
+        100px 200px white, 300px 100px white, 500px 300px white,
+        700px 150px white, 200px 400px white, 600px 250px white,
+        150px 50px white, 450px 400px white, 800px 350px white,
+        250px 150px white, 550px 100px white, 350px 350px white,
+        50px 300px white, 650px 450px white, 900px 100px white,
+        400px 50px white, 750px 200px white, 100px 450px white,
+        850px 400px white, 200px 250px white, 500px 150px white,
+        950px 250px white, 300px 500px white, 600px 50px white,
+        700px 500px white, 150px 350px white, 450px 250px white,
+        800px 150px white, 250px 450px white, 550px 350px white,
+        50px 100px white, 650px 300px white, 900px 450px white,
+        400px 350px white, 750px 50px white, 100px 150px white,
+        1200px 200px white, 1400px 100px white, 1100px 300px white,
+        1300px 400px white, 1000px 150px white, 1500px 250px white,
+        1150px 50px white, 1350px 350px white, 1250px 450px white,
+        920px 320px white, 1050px 180px white, 1420px 380px white,
+        1180px 280px white, 1380px 80px white, 1080px 480px white;
+    animation: twinkle 3s infinite alternate;
+}
+
+.stars::after {
+    box-shadow: 
+        180px 280px white, 380px 180px white, 580px 380px white,
+        780px 230px white, 280px 480px white, 680px 330px white,
+        230px 130px white, 530px 480px white, 880px 430px white,
+        330px 230px white, 630px 180px white, 430px 430px white,
+        130px 380px white, 730px 530px white, 980px 180px white,
+        480px 130px white, 830px 280px white, 180px 530px white,
+        930px 480px white, 280px 330px white, 580px 230px white,
+        1030px 330px white, 380px 580px white, 680px 130px white,
+        1220px 280px white, 1420px 180px white, 1120px 380px white,
+        1320px 480px white, 1020px 230px white, 1520px 330px white,
+        1170px 130px white, 1370px 430px white, 1270px 530px white,
+        940px 340px white, 1070px 200px white, 1440px 400px white;
+    animation: twinkle 4s infinite alternate;
+}
+
+/* Estrellas medianas */
 .stars2 {
     position: fixed;
-    width: 2000px;
-    height: 2000px;
-    background: transparent url('https://i.imgur.com/9m6q3u8.png') repeat;
-    animation: moverEstrellas 350s linear infinite;
-    opacity: 0.5;
+    width: 100%;
+    height: 100%;
     z-index: -4;
+}
+
+.stars2::before {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    box-shadow: 
+        200px 150px rgba(255, 255, 255, 0.6),
+        400px 250px rgba(255, 255, 255, 0.7),
+        600px 100px rgba(255, 255, 255, 0.5),
+        800px 400px rgba(255, 255, 255, 0.8),
+        150px 350px rgba(255, 255, 255, 0.6),
+        550px 200px rgba(255, 255, 255, 0.7),
+        750px 450px rgba(255, 255, 255, 0.5),
+        350px 300px rgba(255, 255, 255, 0.8),
+        950px 150px rgba(255, 255, 255, 0.6),
+        250px 500px rgba(255, 255, 255, 0.7),
+        1100px 250px rgba(255, 255, 255, 0.6),
+        1300px 350px rgba(255, 255, 255, 0.7),
+        1050px 450px rgba(255, 255, 255, 0.5),
+        1250px 150px rgba(255, 255, 255, 0.8),
+        1450px 300px rgba(255, 255, 255, 0.6);
+    animation: twinkle 5s infinite alternate;
+}
+
+/* Animación de parpadeo */
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
 }
 
 /* Neblina espacial suave */
@@ -36,36 +111,115 @@ body {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(80,0,120,0.15), transparent 70%),
-                radial-gradient(circle at 70% 20%, rgba(0,120,255,0.1), transparent 60%);
-    filter: blur(4px);
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(80,0,120,0.15), transparent 50%),
+        radial-gradient(circle at 70% 20%, rgba(0,120,255,0.1), transparent 60%),
+        radial-gradient(circle at 50% 80%, rgba(120,0,180,0.12), transparent 55%);
+    filter: blur(60px);
     z-index: -2;
+    animation: nebulaMove 20s ease-in-out infinite;
 }
 
-/* Cometa */
+@keyframes nebulaMove {
+    0%, 100% { transform: scale(1) translate(0, 0); }
+    50% { transform: scale(1.1) translate(20px, -20px); }
+}
+
+/* Cometas - múltiples instancias */
 .cometa {
     position: fixed;
-    top: -50px;
-    left: -100px;
-    width: 3px;
-    height: 160px;
-    background: linear-gradient(white, transparent);
-    opacity: 0.8;
+    width: 2px;
+    height: 100px;
+    background: linear-gradient(to bottom, white, transparent);
+    opacity: 0;
     transform: rotate(-45deg);
-    animation: cometa 10s linear infinite;
     z-index: -1;
+    animation: cometa 8s linear infinite;
+    box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Cometa 1 */
+.cometa:nth-of-type(1) {
+    top: 10%;
+    left: -100px;
+    animation-delay: 0s;
+}
+
+/* Cometa 2 */
+.cometa:nth-of-type(2) {
+    top: 40%;
+    left: -100px;
+    animation-delay: 3s;
+    animation-duration: 10s;
+}
+
+/* Cometa 3 */
+.cometa:nth-of-type(3) {
+    top: 70%;
+    left: -100px;
+    animation-delay: 6s;
+    animation-duration: 9s;
 }
 
 @keyframes cometa {
-    0% { transform: translate(-200px, -200px) rotate(-45deg); opacity: 0; }
-    10% { opacity: 1; }
-    100% { transform: translate(1600px, 900px) rotate(-45deg); opacity: 0; }
+    0% { 
+        transform: translate(-200px, -200px) rotate(-45deg); 
+        opacity: 0; 
+    }
+    10% { 
+        opacity: 1; 
+    }
+    90% { 
+        opacity: 0.8; 
+    }
+    100% { 
+        transform: translate(calc(100vw + 200px), calc(100vh + 200px)) rotate(-45deg); 
+        opacity: 0; 
+    }
 }
 
-/* Movimiento lento del campo estelar */
-@keyframes moverEstrellas {
-    from { transform: translate(0,0); }
-    to { transform: translate(-500px, 500px); }
+/* Estrellas fugaces adicionales (más pequeñas y rápidas) */
+.estrella-fugaz {
+    position: fixed;
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
+    opacity: 0;
+    transform: rotate(-45deg);
+    z-index: -1;
+    animation: fugaz 4s linear infinite;
+}
+
+.estrella-fugaz:nth-of-type(1) {
+    top: 15%;
+    left: 20%;
+    animation-delay: 1s;
+}
+
+.estrella-fugaz:nth-of-type(2) {
+    top: 50%;
+    left: 60%;
+    animation-delay: 4s;
+}
+
+.estrella-fugaz:nth-of-type(3) {
+    top: 80%;
+    left: 30%;
+    animation-delay: 7s;
+}
+
+@keyframes fugaz {
+    0% { 
+        transform: translate(0, 0) rotate(-45deg); 
+        opacity: 0; 
+    }
+    5% { 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translate(300px, 300px) rotate(-45deg); 
+        opacity: 0; 
+    }
 }
 
 /* -----------------------------
@@ -84,6 +238,7 @@ body {
 .card:hover {
     border-color: #7dd3fc;
     box-shadow: 0 0 15px rgba(125, 211, 252, 0.3);
+    transform: translateY(-2px);
 }
 
 /* -----------------------------
@@ -111,4 +266,6 @@ body {
 
 .btn-space:hover {
     filter: brightness(1.2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(82, 183, 255, 0.4);
 }
