@@ -1,42 +1,56 @@
+<!-- base.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}Subastas{% endblock %}</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{% block title %}Certus Auctions{% endblock %}</title>
 
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Estilos generales -->
-    <style>
-        body {
-            background-color: #f8fafc;
-        }
-    </style>
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+
+<style>
+body {
+background: #0a0f1f;
+color: #e0e6ff;
+}
+.neon {
+text-shadow: 0 0 8px #4be1ec, 0 0 12px #4be1ec;
+}
+.card {
+background: rgba(255, 255, 255, 0.05);
+backdrop-filter: blur(6px);
+border: 1px solid rgba(255, 255, 255, 0.1);
+}
+</style>
 </head>
-
 <body class="min-h-screen flex flex-col">
 
-    <!-- NAVBAR -->
-    <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center shadow-lg">
-        <a href="/" class="text-2xl font-bold">Certus Auctions</a>
-        <div class="flex gap-4">
-            <a href="/" class="hover:text-yellow-300">Inicio</a>
-            <a href="/subastas" class="hover:text-yellow-300">Subastas</a>
-            <a href="/perfil" class="hover:text-yellow-300">Perfil</a>
-        </div>
-    </nav>
 
-    <!-- PAGE CONTENT -->
-    <main class="container mx-auto px-4 py-6 flex-1">
-        {% block content %}{% endblock %}
-    </main>
+<!-- NAVBAR -->
+<nav class="w-full py-4 px-6 bg-black/40 backdrop-blur-md border-b border-white/10 flex justify-between items-center">
+<a href="/" class="text-3xl font-bold neon">Certus Auctions</a>
+<div class="flex gap-6 text-lg">
+<a href="/" class="hover:text-cyan-300">Inicio</a>
+<a href="/subastas" class="hover:text-cyan-300">Subastas</a>
+<a href="/perfil" class="hover:text-cyan-300">Perfil</a>
+</div>
+</nav>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4 text-center">
-        Certus Auctions © 2025 — Proyecto de ejemplo
-    </footer>
+
+<!-- CONTENT -->
+<main class="container mx-auto px-6 py-10 flex-1">
+{% block content %}{% endblock %}
+</main>
+
+
+<!-- FOOTER -->
+<footer class="py-4 text-center border-t border-white/10 bg-black/40 backdrop-blur-md">
+<p class="text-sm">Certus Auctions © 2025</p>
+</footer>
+
 
 </body>
 </html>

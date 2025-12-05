@@ -1,55 +1,73 @@
+<!-- detalle_subasta.html (fragmento corregido) -->
+{% extends "base.html" %}
+{% block title %}Detalle de Subasta{% endblock %}
+
+{% block content %}
+<h1 class="text-4xl font-bold neon mb-6">Detalles de la Subasta</h1>
+
+<!-- AGREGAMOS data-subasta aquí -->
+<div id="detalle" data-subasta="{{ subasta_id }}" class="card p-6 rounded-xl mb-6"></div>
+
+<h2 class="text-2xl font-bold neon mb-4">Realizar Puja</h2>
+<div class="card p-6 rounded-xl max-w-md">
+  <form id="puja-form" class="space-y-4">
+    <div>
+      <label>Monto</label>
+      <input id="monto" type="number" step="0.01" class="w-full p-2 rounded bg-black/40 border border-white/10" required>
+    </div>
+    <div>
+      <label>ID Usuario</label>
+      <input id="usuario" type="number" class="w-full p-2 rounded bg-black/40 border border-white/10" required>
+    </div>
+    <button class="w-full bg-cyan-500 hover:bg-cyan-600 text-black font-bold py-2 rounded-lg">Pujar</button>
+  </form>
+</div>
+
 <script>
-    const subastaId = Number("{{ subasta_id }}");   // ✔️ corregido
-    const usuarioId = 1;  // <---- HARDCODE TEMPORAL
+  // Leemos el id desde el atributo data- del elemento (evitamos {{ }} en JS)
+  const subastaId = Number(document.getElementById("detalle").dataset.subasta);
 
-    const precioActual = document.getElementById("precio");
-    const historial = document.getElementById("historial");
+  async function cargarDetalle() {
+    const res = await fetch(`/subastas/${subastaId}`);
+    const s = await res.json();
 
-    const socket = new WebSocket(`ws://localhost:8000/ws/${subastaId}`);
+    const cont = document.getElementById("detalle");
+    cont.innerHTML = `
+      <h2 class="text-3xl font-bold mb-2">${s.titulo}</h2>
+      <p class="text-gray-300">${s.descripcion}</p>
+      <p class="mt-4 font-semibold">Precio actual: <span id="precio-actual" class="text-cyan-300">$${s.precio_actual}</span></p>
+    `;
+  }
 
-    socket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
+  cargarDetalle();
 
-        if (data.tipo === "nueva_puja") {
-            precioActual.textContent = "$" + data.nuevo_precio;
+  // WebSocket para actualizaciones
+  const socket = new WebSocket(`ws://localhost:8000/ws/${subastaId}`);
+  socket.onmessage = (event) => {
+    const msg = JSON.parse(event.data);
+    if (msg.tipo === "nueva_puja") {
+      document.getElementById("precio-actual").textContent = `$${msg.nuevo_precio}`;
+    }
+  };
 
-            historial.innerHTML = `
-                <li class="bg-gray-100 p-2 rounded">
-                    💰 ${data.usuario_nombre} ofreció $${data.nuevo_precio}
-                </li>
-            ` + historial.innerHTML;
-        }
+  // Enviar puja
+  const formPuja = document.getElementById("puja-form");
+  formPuja.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const body = {
+      subasta_id: subastaId,
+      usuario_id: parseInt(document.getElementById("usuario").value),
+      monto: parseFloat(document.getElementById("monto").value)
     };
 
-    async function cargarDatos() {
-        const res = await fetch(`http://localhost:8000/subastas/${subastaId}`);
-        const s = await res.json();
+    const res = await fetch(`/pujas/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
 
-        document.getElementById("titulo").textContent = s.titulo;
-        document.getElementById("descripcion").textContent = s.descripcion;
-        precioActual.textContent = "$" + s.precio_actual;
-    }
-
-    async function enviarPuja() {
-        const monto = document.getElementById("monto").value;
-
-        const body = {
-            subasta_id: subastaId,
-            usuario_id: usuarioId,
-            monto: parseFloat(monto)
-        };
-
-        const res = await fetch("http://localhost:8000/pujas/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-        });
-
-        if (!res.ok) {
-            const error = await res.json();
-            alert("Error: " + error.detail);
-        }
-    }
-
-    cargarDatos();
+    if (!res.ok) alert("La puja no fue válida.");
+  });
 </script>
+{% endblock %}
