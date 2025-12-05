@@ -1,21 +1,22 @@
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from database import SessionLocal, engine
+from database import Base, engine, SessionLocal
 import crud
-from database import Base, engine
-Base.metadata.create_all(bind=engine)
-
-
+from websocket_manager import conectar
+from fastapi import Request
 
 app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
 
 templates = Jinja2Templates(directory="templates")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# ---------- FRONTEND (HTML) ----------
+
+# ---------- FRONTEND ----------
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
@@ -41,18 +42,16 @@ def crear_subasta_page(request: Request):
     return templates.TemplateResponse("crear_subasta.html", {"request": request})
 
 
-# ---------- API (JSON) ----------
+# ---------- API ----------
 @app.get("/api/subastas")
 def api_listar_subastas():
     db = SessionLocal()
     return crud.obtener_subastas(db)
 
-
 @app.get("/api/subastas/{subasta_id}")
 def api_detalle(subasta_id: int):
     db = SessionLocal()
     return crud.obtener_subasta(db, subasta_id)
-
 
 @app.post("/api/pujas")
 def api_puja(data: dict):
@@ -61,25 +60,6 @@ def api_puja(data: dict):
 
 
 # ---------- WEBSOCKETS ----------
-conexiones = {}
-
 @app.websocket("/ws/{subasta_id}")
 async def websocket_endpoint(websocket: WebSocket, subasta_id: int):
-    await websocket.accept()
-
-    if subasta_id not in conexiones:
-        conexiones[subasta_id] = []
-
-    conexiones[subasta_id].append(websocket)
-
-    try:
-        while True:
-            await websocket.receive_text()
-    except WebSocketDisconnect:
-        conexiones[subasta_id].remove(websocket)
-
-
-def notificar_puja(subasta_id: int, nuevo_precio: float):
-    if subasta_id in conexiones:
-        for ws in conexiones[subasta_id]:
-            ws.send_json({"tipo": "nueva_puja", "nuevo_precio": nuevo_precio})
+    await conectar(websocket, subasta_id)
