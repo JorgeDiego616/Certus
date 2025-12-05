@@ -9,7 +9,17 @@ import auth
 # ==========================
 
 def obtener_subastas(db: Session):
-    return db.query(Subasta).all()
+    """Obtiene solo las subastas activas (no finalizadas)"""
+    from datetime import datetime
+    subastas = db.query(Subasta).all()
+    
+    # Filtrar solo las que no han terminado
+    subastas_activas = []
+    for s in subastas:
+        if s.fecha_fin > datetime.now():
+            subastas_activas.append(s)
+    
+    return subastas_activas
 
 
 def obtener_subasta(db: Session, subasta_id: int):
@@ -65,23 +75,32 @@ def crear_puja(db: Session, data: dict):
 
 def obtener_pujas_usuario(db: Session, usuario_id: int):
     """Obtiene todas las pujas de un usuario con info de subastas"""
-    pujas = db.query(Puja).filter(Puja.usuario_id == usuario_id).all()
+    from datetime import datetime
+    
+    # Usar join para reducir consultas a la BD
+    pujas = (db.query(Puja)
+            .join(Subasta)
+            .filter(Puja.usuario_id == usuario_id)
+            .order_by(Puja.fecha.desc())
+            .limit(50)  # Limitar a las últimas 50 pujas
+            .all())
+    
     resultado = []
     
     for puja in pujas:
-        subasta = obtener_subasta(db, puja.subasta_id)
-        if subasta:
+        # Verificar que la subasta no haya terminado
+        if puja.subasta.fecha_fin > datetime.now():
             resultado.append({
                 "puja_id": puja.id,
                 "monto": puja.monto,
                 "fecha": puja.fecha,
                 "subasta": {
-                    "id": subasta.id,
-                    "titulo": subasta.titulo,
-                    "descripcion": subasta.descripcion,
-                    "precio_actual": subasta.precio_actual,
-                    "fecha_inicio": subasta.fecha_inicio,
-                    "duracion_horas": subasta.duracion_horas
+                    "id": puja.subasta.id,
+                    "titulo": puja.subasta.titulo,
+                    "descripcion": puja.subasta.descripcion,
+                    "precio_actual": puja.subasta.precio_actual,
+                    "fecha_inicio": puja.subasta.fecha_inicio,
+                    "duracion_horas": puja.subasta.duracion_horas
                 }
             })
     

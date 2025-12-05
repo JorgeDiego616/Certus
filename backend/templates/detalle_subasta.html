@@ -40,9 +40,14 @@
   socket.onmessage = (event) => {
     const msg = JSON.parse(event.data);
     if (msg.tipo === "nueva_puja") {
-      document.getElementById("precio-actual").textContent = `$${msg.nuevo_precio}`;
+      document.getElementById("precio-actual").textContent = `${msg.nuevo_precio}`;
     }
   };
+
+  /* IMPORTANTE: Cerrar WebSocket cuando se sale de la página */
+  window.addEventListener('beforeunload', () => {
+    socket.close();
+  });
 
   /* Enviar puja */
   const formPuja = document.getElementById("puja-form");

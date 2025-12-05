@@ -17,6 +17,12 @@
 let contadores = {};
 let usuarioActual = null;
 
+/* Limpiar TODOS los contadores antes de crear nuevos */
+function limpiarContadores() {
+  Object.values(contadores).forEach(timer => clearInterval(timer));
+  contadores = {};
+}
+
 /* Obtener usuario actual */
 async function obtenerUsuarioActual() {
   const res = await fetch('/api/usuario/actual');
@@ -30,6 +36,11 @@ async function obtenerUsuarioActual() {
 /* Función para calcular y mostrar el contador */
 function iniciarContador(subastaId, fechaFin) {
   const elementoId = `contador-${subastaId}`;
+  
+  /* Si ya existe un contador para esta subasta, limpiarlo primero */
+  if (contadores[subastaId]) {
+    clearInterval(contadores[subastaId]);
+  }
   
   contadores[subastaId] = setInterval(() => {
     const ahora = new Date().getTime();
@@ -65,6 +76,15 @@ async function cargarMisPujas() {
   const pujas = await res.json();
 
   const cont = document.getElementById('mis-pujas');
+  
+  /* Limpiar contadores viejos de "mis pujas" antes de recargar */
+  Object.keys(contadores).forEach(key => {
+    if (!key.startsWith('all-')) {
+      clearInterval(contadores[key]);
+      delete contadores[key];
+    }
+  });
+  
   cont.innerHTML = '';
 
   if (pujas.length === 0) {
@@ -164,6 +184,23 @@ async function cargarSubastas() {
 window.addEventListener('DOMContentLoaded', () => {
   obtenerUsuarioActual();
   cargarSubastas();
+});
+
+/* IMPORTANTE: Limpiar contadores cuando el usuario sale de la página */
+window.addEventListener('beforeunload', () => {
+  limpiarContadores();
+});
+
+/* También limpiar cuando se oculta la página (cambio de tab) */
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    /* Pausar contadores cuando la página no está visible */
+    limpiarContadores();
+  } else {
+    /* Recargar cuando vuelve a estar visible */
+    obtenerUsuarioActual();
+    cargarSubastas();
+  }
 });
 </script>
 
